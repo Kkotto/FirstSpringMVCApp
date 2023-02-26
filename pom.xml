@@ -9,6 +9,8 @@
     <url>https://maven.apache.org</url>
     <properties>
         <spring.version>6.0.3</spring.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -45,7 +47,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring6</artifactId>
-            <version>3.1.1.RELEASE</version>
+            <version>3.1.0.RELEASE</version>
         </dependency>
     </dependencies>
     <build>
