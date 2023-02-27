@@ -45,3 +45,17 @@
 - 3хх - Редирект
 - 4хх - ошибка клиента (браузера), напр, переход на несуществующую страницу
 - 5хх - ошибка сервера, напр, нерабочая БД, ошибка в коде
+
+### Get-request
+
+Параметры Get-запроса можно получить двумя способами:
+
+1. public void helloPage(HttpServletRequest request){ String name = request.getParameter("name");}
+2. public void helloPage(@RequestMapping("name") String name){}
+
+HttpServletRequest содержит все данные запроса.
+
+Если в адресе запроса нет параметров, HttpServletRequest присваивает им значения null, а @RequestMapping выдает ошибку,
+т.к. ожидает данные параметры. Чтобы сделать параметры не обязательными, можно использовать
+@RequestMapping(value = "name", required = false) - если параметры передаются, то они внедряются, если не передаются, то
+в этих переменных будет лежать null.
