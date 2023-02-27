@@ -2,7 +2,15 @@
 
 Рекомендуется создавать представления в директории, соответствующей названию контроллера, в чьем методе они вызываются.
 
-### Controllers
+# MVC
+
+[Model](#model) - логика работы с данными.
+
+[View](#view) - логика представления, интерфейс.
+
+[Controller](#controllers) - логика навигации, обработка запросов.
+
+## Controllers
 
 @Controller - тот же @Component, но с дополнительными возможностями.
 
@@ -14,11 +22,11 @@
 
 ### Mappings
 
-- **@GetMapping.** Самый используемый запрос. Идемпотентный - на сервере ничего не меняется. _Тело запроса всегда
+- ```@GetMapping.``` Самый используемый запрос. Идемпотентный - на сервере ничего не меняется. _Тело запроса всегда
   пустое_. Если необходимо послать данные в Get запросе, они прописываются в URL: ?param=value. Параметры нужны для
   передачи информации от клиента к серверу во время запроса. Параметры передаются в формате
   ?ключ1=значение1&ключ2=значение2.
-- **@PostMapping.** Цель запроса - **изменить что-то на сервере** (создание записи, аккаунта, загрузка фото). Все
+- ```@PostMapping.``` Цель запроса - **изменить что-то на сервере** (создание записи, аккаунта, загрузка фото). Все
   параметры хранятся _в теле запроса_, в URL никакие данные не хранятся. Есть специальный заголовок: content-type, в
   котором указывается тип данных, которые передаются в теле запроса. Тело запроса может содержать данные различных
   типов.
@@ -28,9 +36,9 @@
 
 Маппинги связывают метод контроллера с адресом, по которому можно к этому методу обратиться.
 
-Устаревший вариант: @RequestMapping(method = RequestMethod.GET)
+Устаревший вариант: ```@RequestMapping(method = RequestMethod.GET)```
 
-Актуально использовать @RequestMapping("/address") над **классом**.
+Актуально использовать ```@RequestMapping("/address")``` над **классом**.
 
 Структура запроса:
 
@@ -50,12 +58,45 @@
 
 Параметры Get-запроса можно получить двумя способами:
 
-1. public void helloPage(HttpServletRequest request){ String name = request.getParameter("name");}
-2. public void helloPage(@RequestMapping("name") String name){}
+```
+public String helloPage(HttpServletRequest request){ 
+    String name = request.getParameter("name");
+    return "view";
+}
+```
+
+``` 
+public void helloPage(@RequestParam("name") String name){
+    return "view";
+}
+```
 
 HttpServletRequest содержит все данные запроса.
 
-Если в адресе запроса нет параметров, HttpServletRequest присваивает им значения null, а @RequestMapping выдает ошибку,
+Если в адресе запроса нет параметров, HttpServletRequest присваивает им значения null, а @RequestParam выдает ошибку,
 т.к. ожидает данные параметры. Чтобы сделать параметры не обязательными, можно использовать
-@RequestMapping(value = "name", required = false) - если параметры передаются, то они внедряются, если не передаются, то
-в этих переменных будет лежать null.
+``` @RequestParam(value = "name", required = false) ``` - если параметры передаются, то они внедряются, если не
+передаются, то в этих переменных будет лежать null.
+
+## Model
+
+Модель - контейнер для данных приложения.
+
+### Controller-Model-View
+
+Получение доступа к модели в контроллере:
+
+```
+public String hello(Model model) {
+    model.setAttribute("key", "value");
+    return "view";
+}
+``` 
+
+Spring внедряет Model в метод контроллера автоматически.
+
+## View
+
+### Thymeleaf
+
+<p th:text="${param}">Shows param value from model. This text will be replaced with dynamic model value param</p>
